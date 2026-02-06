@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<ruleset name="Laravel Coding Standard">
+    <description>PHPCS rules for Laravel projects</description>
+
+    <!-- Qué estándar usar -->
+    <rule ref="PSR12"/>
+
+    <!-- Rutas a analizar -->
+    <file>app</file>
+    <file>routes</file>
+    <file>database</file>
+    <file>config</file>
+
+    <!-- Archivos a ignorar -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>storage/*</exclude-pattern>
+    <exclude-pattern>bootstrap/cache/*</exclude-pattern>
+
+    <!-- PHP mínimo -->
+    <config name="php_version" value="80200"/>
+
+    <!-- Ajustes útiles -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="150"/>
+        </properties>
+    </rule>
+</ruleset>
