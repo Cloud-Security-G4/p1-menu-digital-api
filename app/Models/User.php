@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -36,6 +37,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_USER = 'user';
+
     /**
      * Get the attributes that should be cast.
      *
@@ -47,5 +51,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string $role The role to check for.
+     * @return bool True if the user has the specified role, false otherwise.
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Determine if the user has an administrator role.
+     *
+     * @return bool True if the user's role is admin, false otherwise.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
     }
 }
