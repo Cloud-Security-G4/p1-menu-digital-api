@@ -9,8 +9,7 @@ use Illuminate\Support\Str;
 
 class Plato extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'platos';
 
