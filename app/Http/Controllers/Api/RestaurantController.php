@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class RestaurantController extends Controller
 {
@@ -15,8 +16,7 @@ class RestaurantController extends Controller
      */
     public function index(Request $request)
     {
-
-        $restaurant = Restaurant::where('user_id', auth()->id())->first();
+        $restaurant = Restaurant::where('user_id', auth()->id())->get();
 
         if (!$restaurant) {
             return response()->json([
@@ -28,7 +28,24 @@ class RestaurantController extends Controller
     }
 
     /**
-     * POST /api/v1/admin/restaurante
+     * GET /api/v1/admin/restaurant/{id}
+     * Obtener restaurante del usuario autenticado
+     */
+    public function show(Request $request, $id)
+    {
+        $restaurant = Restaurant::where('user_id', auth()->id())->where('id', $id)->first();
+
+        if (!$restaurant) {
+            return response()->json([
+                'message' => 'El restaurante no existe o no pertenece al usuario'
+            ], 404);
+        }
+
+        return response()->json($restaurant);
+    }
+
+    /**
+     * POST /api/v1/admin/restaurant
      * Crear restaurante
      */
     public function store(Request $request)
@@ -41,23 +58,22 @@ class RestaurantController extends Controller
         }
 
         $data = $request->validate([
-            'nombre'      => 'required|string|max:100',
-            'descripcion' => 'nullable|string|max:500',
-            'telefono'    => 'nullable|string',
-            'direccion'   => 'nullable|string',
-            'horarios'    => 'nullable|array',
+            'name'      => 'required|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'phone'    => 'nullable|string',
+            'address'   => 'nullable|string',
+            'hours'    => 'nullable|array',
             'logo'        => 'nullable|url',
         ]);
+        
 
         $restaurant = Restaurant::create([
-            'id'          => Str::uuid(),
             'user_id'     => $request->user()->id,
-            'nombre'      => $data['nombre'],
-            'slug'        => Str::slug($data['nombre']),
-            'descripcion' => $data['descripcion'] ?? null,
-            'telefono'    => $data['telefono'] ?? null,
-            'direccion'   => $data['direccion'] ?? null,
-            'horarios'    => $data['horarios'] ?? null,
+            'name'      => $data['name'],
+            'description' => $data['description'] ?? null,
+            'phone'    => $data['phone'] ?? null,
+            'address'   => $data['address'] ?? null,
+            'hours'    => $data['hours'] ?? null,
             'logo'        => $data['logo'] ?? null,
         ]);
 
@@ -65,7 +81,7 @@ class RestaurantController extends Controller
     }
 
     /**
-     * PUT /api/v1/admin/restaurante
+     * PUT /api/v1/admin/restaurant
      * Actualizar restaurante
      */
     public function update(Request $request)
@@ -73,17 +89,13 @@ class RestaurantController extends Controller
         $restaurant = Restaurant::where('user_id', $request->user()->id)->firstOrFail();
 
         $data = $request->validate([
-            'nombre'      => 'sometimes|required|string|max:100',
-            'descripcion' => 'nullable|string|max:500',
-            'telefono'    => 'nullable|string',
-            'direccion'   => 'nullable|string',
-            'horarios'    => 'nullable|array',
+            'name'      => 'sometimes|required|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'phone'    => 'nullable|string',
+            'address'   => 'nullable|string',
+            'hours'    => 'nullable|array',
             'logo'        => 'nullable|url',
         ]);
-
-        if (isset($data['nombre'])) {
-            $data['slug'] = Str::slug($data['nombre']);
-        }
 
         $restaurant->update($data);
 
@@ -91,12 +103,21 @@ class RestaurantController extends Controller
     }
 
     /**
-     * DELETE /api/v1/admin/restaurante
+     * DELETE /api/v1/admin/restaurant
      * Eliminar restaurante
      */
     public function destroy(Request $request)
     {
-        $restaurant = Restaurant::where('user_id', $request->user()->id)->firstOrFail();
+        $restaurant = Restaurant::where('user_id', $request->user()->id)
+                    ->where('id', $request->id)
+                    ->first();
+
+        if (! $restaurant) {
+            return response()->json([
+            'message' => 'El restaurante no existe o no pertenece al usuario'
+            ], 404);
+        }
+
         $restaurant->delete();
 
         return response()->json([

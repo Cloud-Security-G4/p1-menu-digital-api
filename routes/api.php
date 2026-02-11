@@ -12,8 +12,15 @@ Route::prefix('/v1')->group(function () {
             Route::post('/logout', [AuthController::class, 'logout']);
         });
     });
-    Route::prefix('admin')->group(function () {
+
+    Route::middleware('auth:api')->group(function () {
+        Route::get('/me', [AuthController::class, 'me']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+
+    Route::middleware('auth:api')->prefix('/admin')->group(function () {
         Route::get('/restaurant', [RestaurantController::class, 'index']);
+        Route::get('/restaurant/{id}', [RestaurantController::class, 'show']);
         Route::post('/restaurant', [RestaurantController::class, 'store']);
         Route::put('/restaurant', [RestaurantController::class, 'update']);
         Route::delete('/restaurant', [RestaurantController::class, 'destroy']);
@@ -21,16 +28,3 @@ Route::prefix('/v1')->group(function () {
 });
 
 
-
-Route::middleware('auth:api')->group(function () {
-    Route::get('/me', [AuthController::class, 'me']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-
-Route::middleware('auth:api')->prefix('v1/admin')->group(function () {
-    Route::get('/restaurante', [RestaurantController::class, 'index']);
-    Route::post('/restaurante', [RestaurantController::class, 'store']);
-    Route::put('/restaurante', [RestaurantController::class, 'update']);
-    Route::delete('/restaurante', [RestaurantController::class, 'destroy']);
-});
