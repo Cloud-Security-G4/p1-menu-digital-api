@@ -6,22 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 
-class Categoria extends Model
+class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'categorias';
+    protected $table = 'categories';
 
     protected $fillable = [
-        'restaurante_id',
-        'nombre',
-        'descripcion',
-        'posicion',
-        'activa',
+        'restaurant_id',
+        'name',
+        'description',
+        'position',
+        'active',
     ];
 
     protected $casts = [
-        'activa' => 'boolean',
+        'active' => 'boolean',
     ];
 
     protected static function booted()
@@ -36,13 +36,13 @@ class Categoria extends Model
     /**
      * Relación con Restaurante
      */
-    public function restaurante()
+    public function restaurant()
     {
-        return $this->belongsTo(Restaurante::class);
+        return $this->belongsTo(Restaurant::class);
     }
 
-    public function platos()
+    public function dishes()
     {
-        return $this->hasMany(Plato::class);
+        return $this->hasMany(Dish::class);
     }
 }

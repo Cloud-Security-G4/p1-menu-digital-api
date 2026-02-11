@@ -33,8 +33,12 @@ class Restaurant extends Model
             $restaurant->slug = Str::slug($restaurant->name);
         });
     }
-    public function categorias()
+    public function categories()
     {
-        return $this->hasMany(Categoria::class);
+        return $this->hasMany(Category::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

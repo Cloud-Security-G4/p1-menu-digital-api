@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorias', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->uuid('restaurante_id');
-            $table->string('nombre', 50);
-            $table->text('descripcion')->nullable();
-            $table->integer('posicion')->nullable();
-            $table->boolean('activa')->default(true);
+            $table->uuid('restaurant_id');
+            $table->string('name', 50);
+            $table->text('description')->nullable();
+            $table->integer('position')->nullable();
+            $table->boolean('active')->default(true);
 
             $table->timestamps();
 
-            $table->foreign('restaurante_id')
+            $table->foreign('restaurant_id')
                 ->references('id')
-                ->on('restaurantes')
+                ->on('restaurants')
                 ->onDelete('cascade');
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categorias');
+        Schema::dropIfExists('categories');
     }
 };
