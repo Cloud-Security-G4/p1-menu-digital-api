@@ -52,7 +52,9 @@ To start the project, follow these steps:
 
 
 ### API Endpoints 
-### Endpoint: `/api/v1/auth/register`
+### Endpoint: POST `/api/v1/auth/register`
+Create user.
+
  ```json
 curl --location '[URL_PROJECT]/api/v1/auth/register' \
 --header 'Accept: application/json' \
@@ -64,7 +66,9 @@ curl --location '[URL_PROJECT]/api/v1/auth/register' \
 }'
  ```
 
-### Endpoint: `/api/v1/auth/login`
+### Endpoint: POST `/api/v1/auth/login`
+Login a user.
+
  ```json
 curl --location '[URL_PROJECT]/api/v1/auth/login' \
 --header 'Content-Type: application/json' \
@@ -74,7 +78,8 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
 }'
  ```
 
-### Endpoint: `/api/v1/me`
+### Endpoint: GET `/api/v1/me`
+Show all user information.
 
  ```json
  curl --location '[URL_PROJECT]/api/v1/me' \
@@ -83,7 +88,8 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
  ```
 
 
-### Endpoint: `/api/v1/admin/restaurant/`
+### Endpoint: GET `/api/v1/admin/restaurant/`
+Get all user's restautants.
 
  ```json
  curl --location '[URL_PROJECT]/api/v1/admin/restaurant/' \
@@ -93,7 +99,8 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
  ```
 
 
-### Endpoint: `/api/v1/admin/restaurant/:id`
+### Endpoint: GET `/api/v1/admin/restaurant/:id`
+Get a single restaurant.
 
  ```json
  curl --location '[URL_PROJECT]/api/v1/admin/restaurant/35899fe3-aaba-49f3-be22-867ef5b09d82' \
@@ -102,7 +109,8 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
  ```
 
 
-### Endpoint: `/api/v1/admin/restaurant`
+### Endpoint: POST `/api/v1/admin/restaurant`
+Create a restaurant.
 
  ```json
  curl --location '[URL_PROJECT]/api/v1/admin/restaurant' \
@@ -129,10 +137,11 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
  ```
 
 
-### Endpoint: `/api/v1/admin/restaurant?`
+### Endpoint: PUT `/api/v1/admin/restaurant/:id`
+Update a restaurant.
 
  ```json
- curl --location --request PUT '[URL_PROJECT]/api/v1/admin/restaurant?=null' \
+ curl --location --request PUT '[URL_PROJECT]/api/v1/admin/restaurant' \
 --header 'Accept: application/json' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer [TOKEN]' \
@@ -156,7 +165,8 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
  ```
 
 
-### Endpoint: `/api/v1/admin/restaurant`
+### Endpoint: DELETE `/api/v1/admin/restaurant`
+Delete a restaurant.
 
  ```json
  curl --location --request DELETE '[URL_PROJECT]/api/v1/admin/restaurant' \
