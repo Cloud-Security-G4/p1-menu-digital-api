@@ -51,8 +51,9 @@ To start the project, follow these steps:
     ```
 
 
-### API Endpoints 
-### Endpoint: POST `/api/v1/auth/register`
+# API Endpoints 
+## Restaurants
+#### Endpoint: POST `/api/v1/auth/register`
 Create user.
 
  ```json
@@ -66,7 +67,7 @@ curl --location '[URL_PROJECT]/api/v1/auth/register' \
 }'
  ```
 
-### Endpoint: POST `/api/v1/auth/login`
+#### Endpoint: POST `/api/v1/auth/login`
 Login a user.
 
  ```json
@@ -78,7 +79,7 @@ curl --location '[URL_PROJECT]/api/v1/auth/login' \
 }'
  ```
 
-### Endpoint: GET `/api/v1/me`
+## Endpoint: GET `/api/v1/me`
 Show all user information.
 
  ```json
@@ -88,7 +89,7 @@ Show all user information.
  ```
 
 
-### Endpoint: GET `/api/v1/admin/restaurant/`
+## Endpoint: GET `/api/v1/admin/restaurant/`
 Get all user's restautants.
 
  ```json
@@ -99,7 +100,7 @@ Get all user's restautants.
  ```
 
 
-### Endpoint: GET `/api/v1/admin/restaurant/:id`
+## Endpoint: GET `/api/v1/admin/restaurant/:id`
 Get a single restaurant.
 
  ```json
@@ -109,7 +110,7 @@ Get a single restaurant.
  ```
 
 
-### Endpoint: POST `/api/v1/admin/restaurant`
+#### Endpoint: POST `/api/v1/admin/restaurant`
 Create a restaurant.
 
  ```json
@@ -137,7 +138,7 @@ Create a restaurant.
  ```
 
 
-### Endpoint: PUT `/api/v1/admin/restaurant/:id`
+## Endpoint: PUT `/api/v1/admin/restaurant/:id`
 Update a restaurant.
 
  ```json
@@ -165,7 +166,7 @@ Update a restaurant.
  ```
 
 
-### Endpoint: DELETE `/api/v1/admin/restaurant`
+## Endpoint: DELETE `/api/v1/admin/restaurant`
 Delete a restaurant.
 
  ```json
@@ -178,14 +179,86 @@ Delete a restaurant.
 }'
  ```
 
+## Categories
+## Endpoint: GET `/api/v1/admin/categories`
+Get all categories
 
+```json
+curl --location '[URL_PROJECT]/api/v1/admin/categories' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data ''
+```
 
+## Endpoint: POST `/api/v1/admin/categories`
+Create category
 
+```json
+curl --location '[URL_PROJECT]/api/v1/admin/categories' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+    "name": "Categoria 2",
+    "description": "Descripcion dela restaurasnte de Andres",
+    "position": 2,
+    "active": true
+}'
+```
 
-#### Notes:
-- Ensure the `email` field is unique.
-- Passwords should be stored securely (e.g., hashed) on the server.
-aksdj
+## Endpoint: PUT `/api/v1/admin/categories/:id`
+Update category
+
+```json
+curl --location --request PUT '[URL_PROJECT]/api/v1/admin/categories/cd5a296f-0f25-47c6-b83b-110ae4815fae' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+    "name": "Categoria 4",
+    "description": "Descripcion dela restaurasnte de Andres",
+    "position": 1,
+    "active": true
+}'
+```
+
+## Endpoint: DELETE `/api/v1/admin/categories/:id`
+Delete category
+
+```json
+curl --location --request DELETE '[URL_PROJECT]/api/v1/admin/categories/c0e14916-02a3-4a4f-bbc8-ccb5ce4d1e40' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+    "name": "Categoria 4",
+    "description": "Descripcion dela restaurasnte de Andres",
+    "position": 1,
+    "active": true
+}'
+```
+
+## Endpoint: PATCH `/api/v1/admin/categories/reorder`
+Reorder categories
+
+```json
+curl --location --request PATCH '[URL_PROJECT]/api/v1/admin/categories/reorder' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+    "categories": [
+        {
+            "id": "0ae5318f-a797-4f58-9ab7-d553655a9bc5",
+            "position": 1
+        },
+        {
+            "id": "df889c16-7090-4684-b6b4-3da7706b9c7a",
+            "position": 2
+        }
+    ]
+}'
+```
 
 ## License
 

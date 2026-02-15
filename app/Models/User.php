@@ -73,7 +73,7 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_ADMIN;
     }
-    public function restaurants()
+    public function restaurant()
     {
         return $this->hasMany(Restaurant::class);
     }
