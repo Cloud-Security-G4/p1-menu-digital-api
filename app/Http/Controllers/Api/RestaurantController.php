@@ -16,28 +16,11 @@ class RestaurantController extends Controller
      */
     public function index(Request $request)
     {
-        $restaurant = Restaurant::where('user_id', auth()->id())->get();
+        $restaurant = Restaurant::where('user_id', auth()->id())->first();
 
         if (!$restaurant) {
             return response()->json([
                 'message' => 'El usuario no tiene un restaurante creado'
-            ], 404);
-        }
-
-        return response()->json($restaurant);
-    }
-
-    /**
-     * GET /api/v1/admin/restaurant/{id}
-     * Obtener restaurante del usuario autenticado
-     */
-    public function show(Request $request, $id)
-    {
-        $restaurant = Restaurant::where('user_id', auth()->id())->where('id', $id)->first();
-
-        if (!$restaurant) {
-            return response()->json([
-                'message' => 'El restaurante no existe o no pertenece al usuario'
             ], 404);
         }
 
@@ -50,8 +33,8 @@ class RestaurantController extends Controller
      */
     public function store(Request $request)
     {
-        // Opcional: bloquear si ya existe uno
-        if ($request->user()->restaurante) {
+        // bloquear si ya existe uno
+        if ($request->user()->restaurant) {
             return response()->json([
                 'message' => 'El usuario ya tiene un restaurante'
             ], 409);
@@ -65,7 +48,6 @@ class RestaurantController extends Controller
             'hours'    => 'nullable|array',
             'logo'        => 'nullable|url',
         ]);
-        
 
         $restaurant = Restaurant::create([
             'user_id'     => $request->user()->id,
@@ -106,10 +88,10 @@ class RestaurantController extends Controller
      * DELETE /api/v1/admin/restaurant
      * Eliminar restaurante
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
         $restaurant = Restaurant::where('user_id', $request->user()->id)
-                    ->where('id', $request->id)
+                    ->where('id', $id)
                     ->first();
 
         if (! $restaurant) {
