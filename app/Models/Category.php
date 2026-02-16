@@ -11,6 +11,8 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
         'restaurant_id',

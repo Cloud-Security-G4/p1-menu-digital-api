@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 class Restaurant extends Model
 {
     protected $table = 'restaurants';
-
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -34,7 +33,7 @@ class Restaurant extends Model
             $restaurant->slug = self::createAnUniqueRestautantSlug($restaurant->name);
 
             if (isset($restaurant->hours)) {
-            self::validateHoursFormat($restaurant->hours);
+                self::validateHoursFormat($restaurant->hours);
             }
         });
 
@@ -67,7 +66,6 @@ class Restaurant extends Model
         }
 
         return $slug;
-
     }
 
     private static function validateHoursFormat(array $hours): void

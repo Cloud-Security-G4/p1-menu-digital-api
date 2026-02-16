@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\DishController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
@@ -30,5 +31,12 @@ Route::prefix('/v1')->group(function () {
         Route::put('/categories/{id}', [CategoryController::class, 'update']);
         Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
         Route::patch('/categories/reorder', [CategoryController::class, 'reorder']);
+
+        Route::get('/dishes', [DishController::class, 'index']);
+        Route::get('/dishes/{id}', [DishController::class, 'show']);
+        Route::post('/dishes', [DishController::class, 'store']);
+        Route::put('/dishes/{id}', [DishController::class, 'update']);
+        Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
+        Route::patch('/dishes/{id}/availability', [DishController::class, 'toggleAvailability']);
     });
 });
