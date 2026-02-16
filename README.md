@@ -260,6 +260,122 @@ curl --location --request PATCH '[URL_PROJECT]/api/v1/admin/categories/reorder' 
 }'
 ```
 
+## Dishes
+## Endpoint: GET `/api/v1/admin/dishes`
+Get all dishes
+
+```json
+curl --location --request GET '[URL_PROJECT]/api/v1/admin/dishes' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+    "category_id": "df889c16-7090-4684-b6b4-3da7706b9c7a"
+}'
+```
+
+## Endpoint: GET `/api/v1/admin/dishes/:id`
+Get a single dish
+
+```json
+curl --location --request GET '[URL_PROJECT]/api/v1/admin/dishes/1d6fa306-17b7-4d92-9c21-0d8a5544fb15' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+    "category_id": "df889c16-7090-4684-b6b4-3da7706b9c7a"
+}'
+```
+
+## Endpoint: POST `/api/v1/admin/dishes`
+Create dish
+
+```json
+curl --location '[URL_PROJECT]/api/v1/admin/dishes' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+  "name": "Hamburguesa Angus Especial",
+  "description": "Hamburguesa de carne Angus 200g con queso cheddar, tocineta crujiente y salsa de la casa.",
+  "price": 32000,
+  "offer_price": 28000,
+  "image_url": "https://mirestaurante.com/images/hamburguesa-angus.jpg",
+  "available": true,
+  "featured": true,
+  "tags": ["carne", "popular", "sin gluten"],
+  "position": 1,
+  "category_id": "df889c16-7090-4684-b6b4-3da7706b9c7a"
+}'
+```
+
+## Endpoint: PUT `/api/v1/admin/dishes/:id`
+Update dish
+
+```json
+curl --location --request PUT '[URL_PROJECT]/api/v1/admin/dishes/8fded667-9a12-445f-bdc0-e8ff1898a1fc' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+  "name": "Hamburguesa Angus Especial",
+  "description": "Hamburguesa de carne Angus 200g con queso cheddar, tocineta crujiente y salsa de la casa.",
+  "price": 32000,
+  "offer_price": 38000,
+  "image_url": "https://mirestaurante.com/images/hamburguesa-angus.jpg",
+  "available": true,
+  "featured": true,
+  "tags": ["carne", "popular", "sin gluten"],
+  "position": 1,
+  "category_id": 3
+}'
+```
+
+## Endpoint: DELETE `/api/v1/admin/dishes/:id`
+Delete dish
+
+```json
+curl --location --request DELETE '[URL_PROJECT]/api/v1/admin/dishes/f6645e59-75d4-4638-bdc6-f3bc4ee24d19' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+  "name": "Hamburguesa Angus Especial",
+  "description": "Hamburguesa de carne Angus 200g con queso cheddar, tocineta crujiente y salsa de la casa.",
+  "price": 32000,
+  "offer_price": 28000,
+  "image_url": "https://mirestaurante.com/images/hamburguesa-angus.jpg",
+  "available": true,
+  "featured": true,
+  "tags": ["carne", "popular", "sin gluten"],
+  "position": 1,
+  "category_id": 3
+}'
+```
+
+## Endpoint: PATCH `/api/v1/admin/dishes/:id/availability`
+Toggle dish aviability
+
+```json
+curl --location --request PATCH '[URL_PROJECT]/api/v1/admin/dishes/1d6fa306-17b7-4d92-9c21-0d8a5544fb15/availability' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer [TOKEN]' \
+--data '{
+  "name": "Hamburguesa Angus Especial",
+  "description": "Hamburguesa de carne Angus 200g con queso cheddar, tocineta crujiente y salsa de la casa.",
+  "price": 32000,
+  "offer_price": 28000,
+  "image_url": "https://mirestaurante.com/images/hamburguesa-angus.jpg",
+  "available": true,
+  "featured": true,
+  "tags": ["carne", "popular", "sin gluten"],
+  "position": 1,
+  "category_id": 3
+}'
+```
+
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
