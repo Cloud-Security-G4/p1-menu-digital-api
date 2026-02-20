@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DishController;
+use App\Http\Controllers\Api\MenuController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
@@ -38,5 +39,8 @@ Route::prefix('/v1')->group(function () {
         Route::put('/dishes/{id}', [DishController::class, 'update']);
         Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
         Route::patch('/dishes/{id}/availability', [DishController::class, 'toggleAvailability']);
+        Route::get('/qr', [MenuController::class, 'getRestaurantMenuQr']);
     });
+
+    Route::get('/menu/{slug}', [MenuController::class, 'getPublicMenu']);
 });
