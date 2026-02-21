@@ -24,6 +24,7 @@ return new class extends Migration
             $table->jsonb('hours')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

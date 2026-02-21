@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DishController;
 use App\Http\Controllers\Api\MenuController;
+use App\Http\Controllers\Api\ImageController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
@@ -40,6 +41,9 @@ Route::prefix('/v1')->group(function () {
         Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
         Route::patch('/dishes/{id}/availability', [DishController::class, 'toggleAvailability']);
         Route::get('/qr', [MenuController::class, 'getRestaurantMenuQr']);
+
+        Route::post('/upload', [ImageController::class, 'upload']);
+        Route::delete('/upload/{filename}', [ImageController::class, 'delete']);
     });
 
     Route::get('/menu/{slug}', [MenuController::class, 'getPublicMenu']);

@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
             $table->uuid('restaurant_id');
-            $table->string('name', 50);
-            $table->text('description')->nullable();
-            $table->integer('position')->nullable();
-            $table->boolean('active')->default(true);
-
+            $table->string('filename')->unique();
+            $table->string('original_name');
+            $table->string('path');
+            $table->string('mime_type');
+            $table->unsignedBigInteger('size');
+            $table->string('thumbnail_path')->nullable();
+            $table->string('medium_path')->nullable();
+            $table->string('large_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -30,11 +29,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('images');
     }
 };
