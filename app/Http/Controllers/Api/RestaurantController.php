@@ -34,7 +34,10 @@ class RestaurantController extends Controller
     public function store(Request $request)
     {
         // bloquear si ya existe uno
-        if ($request->user()->restaurant) {
+        $restaurant = Restaurant::where('user_id', $request->user()->id)
+                    ->first();
+
+        if ($restaurant) {
             return response()->json([
                 'message' => 'El usuario ya tiene un restaurante'
             ], 409);
