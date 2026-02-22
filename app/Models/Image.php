@@ -36,4 +36,10 @@ class Image extends Model
             }
         });
     }
+
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
 }
