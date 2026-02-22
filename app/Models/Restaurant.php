@@ -3,10 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Restaurant extends Model
 {
+    use HasFactory;
+    use SoftDeletes;
+
     protected $table = 'restaurants';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -47,6 +52,10 @@ class Restaurant extends Model
             }
         });
     }
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
     public function categories()
     {
         return $this->hasMany(Category::class);
@@ -59,7 +68,7 @@ class Restaurant extends Model
     private static function createAnUniqueRestautantSlug($name): string
     {
         $slug = Str::slug($name);
-        $count = self::where('slug', 'LIKE', "{$slug}%")->count();
+        $count = self::withTrashed()->where('slug', 'LIKE', "{$slug}%")->count();
 
         if ($count > 0) {
             $slug .= '-' . ($count + 1);

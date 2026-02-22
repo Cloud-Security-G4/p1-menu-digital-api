@@ -94,15 +94,27 @@ class RestaurantController extends Controller
     public function destroy(Request $request, $id)
     {
         $restaurant = Restaurant::where('user_id', $request->user()->id)
-                    ->where('id', $id)
-                    ->first();
+                ->where('id', $id)
+                ->first();
 
-        if (! $restaurant) {
+        if (!$restaurant) {
             return response()->json([
-            'message' => 'El restaurante no existe o no pertenece al usuario'
+                'message' => 'Restaurante no encontrado o no pertenece al usuario'
             ], 404);
         }
 
+        // Eliminar imágenes asociadas al restaurante
+        $restaurant->images()->delete();
+
+        // Eliminar categorías y platos asociados
+        $restaurant->categories()->with('dishes')->get()->each(function ($category) {
+            $category->dishes()->each(function ($dish) {
+                $dish->delete();
+            });
+            $category->delete();
+        });
+
+        // Eliminar el restaurante
         $restaurant->delete();
 
         return response()->json([

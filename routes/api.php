@@ -48,3 +48,5 @@ Route::prefix('/v1')->group(function () {
 
     Route::get('/menu/{slug}', [MenuController::class, 'getPublicMenu']);
 });
+
+Route::get('/test', [ImageController::class, 'test']);

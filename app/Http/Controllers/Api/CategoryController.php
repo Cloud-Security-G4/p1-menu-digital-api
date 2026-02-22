@@ -91,8 +91,14 @@ class CategoryController extends Controller
 
         if (! $category) {
             return response()->json([
-                'message' => 'Categoría no encontrada'
+            'message' => 'Categoría no encontrada'
             ], 404);
+        }
+
+        if ($category->dishes()->count() > 0) {
+            return response()->json([
+            'message' => 'No se puede eliminar una categoría que tiene platos asociados'
+            ], 422);
         }
 
         $category->delete();
