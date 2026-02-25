@@ -102,19 +102,6 @@ class DishController extends Controller
             'position'      => 'nullable|integer',
             'category_id'   => 'required|exists:categories,id',
         ]);
-        $dish = Dish::create([
-            'restaurant_id' => $restaurant->id,
-            'category_id'   => $data['category_id'],
-            'name'          => $data['name'],
-            'description'   => $data['description'] ?? null,
-            'price'         => $data['price'],
-            'offer_price'   => $data['offer_price'] ?? null,
-            'image_url'     => $data['image_url'] ?? null,
-            'available'     => $data['available'] ?? true,
-            'featured'      => $data['featured'] ?? false,
-            'tags'          => json_encode($data['tags'] ?? []),
-            'position'      => $data['position'] ?? null,
-        ]);
         return response()->json($category, 201);
     }
 
@@ -133,6 +120,7 @@ class DishController extends Controller
         }
 
         $data = $request->validate([
+            'category_id'   => 'required|exists:categories,id',
             'name'          => 'required|string|max:100',
             'description'   => 'nullable|string|max:500',
             'price'         => 'required|numeric',
