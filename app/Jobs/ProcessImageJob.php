@@ -14,14 +14,11 @@ class ProcessImageJob implements ShouldQueue
 {
     use Queueable;
 
-    private ImageManager $manager;
-
     /**
      * Create a new job instance.
      */
     public function __construct(public string $imageId)
     {
-        $this->manager = new ImageManager(new Driver());
     }
 
     /**
@@ -67,8 +64,9 @@ class ProcessImageJob implements ShouldQueue
             'medium'    => ['width' => 600,  'height' => 600],
             'large'     => ['width' => 1200, 'height' => 1200],
         ];
+        $manager = new ImageManager(new Driver());
         foreach ($sizes as $size => $dimensions) {
-            $image = $this->manager->read($imagePath);
+            $image = $manager->read($imagePath);
 
             // Scale down proportionally, never upscale, crop to fill the exact box
             $image->cover($dimensions['width'], $dimensions['height']);

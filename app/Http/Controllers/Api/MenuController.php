@@ -57,29 +57,40 @@ class MenuController extends Controller
         }
 
         // Parámetros opcionales
-        $size = (int) $request->query('size', 250);
+        $sizeParam = strtoupper($request->query('size', 'M'));
+        $format = strtolower($request->query('format', 'svg'));
 
-        // Validaciones básicas
-        $size = $size > 0 && $size <= 1000 ? $size : 250;
+        // Mapeo de tamaños
+        $sizes = [
+            'S'  => 200,
+            'M'  => 400,
+            'L'  => 800,
+            'XL' => 1200,
+        ];
 
-        // URL pública del menú
-        $menuUrl = env('FRONTEND_URL') . '/m/' . $restaurant->slug;
+        $size = $sizes[$sizeParam] ?? 400;
 
-        // Generar QR
-        $qr = QrCode::format('svg')
-            ->size($size)
-            ->generate($menuUrl);
-
-        return response($qr, 200)
-            ->header('Content-Type', 'image/svg+xml');
-
-        if ($format === 'svg') {
-            return response($qr, 200)
-                ->header('Content-Type', 'image/svg+xml');
+        // Validar formato
+        if (!in_array($format, ['svg', 'png'])) {
+            $format = 'svg';
         }
 
+        // URL pública del menú
+        $menuUrl = rtrim(env('FRONTEND_URL'), '/') . '/m/' . $restaurant->slug;
+
+        // Generar QR con nivel de corrección alto (H = 30%)
+        $qrBuilder = QrCode::format($format)
+            ->size($size)
+            ->errorCorrection('H');
+
+        $qr = $qrBuilder->generate($menuUrl);
+
+        $contentType = $format === 'png'
+            ? 'image/png'
+            : 'image/svg+xml';
+
         return response($qr, 200)
-            ->header('Content-Type', 'image/png');
+            ->header('Content-Type', $contentType);
     }
 
 }

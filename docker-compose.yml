@@ -8,9 +8,15 @@ services:
     env_file:
       - .env
     volumes:
-      - ./database:/var/www/html/database
+      - .:/var/www/html
     environment:
       APP_KEY: base64:$(php artisan key:generate --show)
       DB_CONNECTION: sqlite
       DB_DATABASE: /var/www/html/database/database.sqlite
       CACHE_STORE: file
+  queue:
+    build: .
+    container_name: laravel_queue
+    command: php artisan queue:work --tries=3 --timeout=90
+    volumes:
+      - .:/var/www/html
