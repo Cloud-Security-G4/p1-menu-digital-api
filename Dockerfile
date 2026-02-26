@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-enable imagick \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-    
+
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html

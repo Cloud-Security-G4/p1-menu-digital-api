@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+set -x
 
 echo "Fixing permissions..."
 chown -R www-data:www-data storage bootstrap/cache database || true
