@@ -26,6 +26,13 @@ fi
 
 export APP_KEY=$(cat "$APP_KEY_FILE")
 
+echo "Ensuring storage symlink exists..."
+if [ ! -L public/storage ]; then
+    echo "Creating storage symlink..."
+    php artisan storage:link || true
+    chown -h www-data:www-data public/storage || true
+fi
+
 echo "Running migrations..."
 su -s /bin/sh www-data -c "php artisan migrate --force"
 
