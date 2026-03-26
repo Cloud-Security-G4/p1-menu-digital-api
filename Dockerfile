@@ -1,10 +1,8 @@
-FROM php:8.3-apache
+FROM php:8.3-apache-bookworm
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
-    curl \
     unzip \
-    zip \
     libpng-dev \
     libjpeg-dev \
     libwebp-dev \
@@ -12,42 +10,45 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libmagickwand-dev \
-    && docker-php-ext-configure gd \
+ && docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
         --with-webp \
-    && docker-php-ext-install -j$(nproc) \
-        pdo_mysql \
+ && docker-php-ext-install \
+        pdo_pgsql \
         mbstring \
         exif \
         pcntl \
         bcmath \
         gd \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+ && pecl install imagick \
+ && docker-php-ext-enable imagick \
+ && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html
-# Composer
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 COPY . .
 
-# Luego instalar dependencias
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
 
-# Permisos mínimos
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Apache apunta a public
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' \
+    /etc/apache2/sites-available/000-default.conf
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
+
 CMD ["apache2-foreground"]
 
 EXPOSE 80

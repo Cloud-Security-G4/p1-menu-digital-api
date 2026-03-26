@@ -1,43 +1,39 @@
 #!/bin/sh
 set -e
-set -x
+
+echo "Starting container..."
 
 echo "Fixing permissions..."
-chown -R www-data:www-data storage bootstrap/cache database || true
+chown -R www-data:www-data storage bootstrap/cache || true
 
-echo "Ensuring SQLite database exists..."
-if [ ! -f database/database.sqlite ]; then
-    touch database/database.sqlite
-fi
-
-chown www-data:www-data database/database.sqlite
-chmod 664 database/database.sqlite
-
-APP_KEY_FILE=/run/secrets/app.key
-
-mkdir -p /run/secrets
-
-if [ ! -f "$APP_KEY_FILE" ]; then
-    echo "Generating APP_KEY..."
-    php artisan key:generate --show > "$APP_KEY_FILE"
-else
-    echo "Using existing APP_KEY"
-fi
-
-export APP_KEY=$(cat "$APP_KEY_FILE")
-
-echo "Ensuring storage symlink exists..."
+echo "Ensuring storage symlink..."
 if [ ! -L public/storage ]; then
-    echo "Creating storage symlink..."
     php artisan storage:link || true
-    chown -h www-data:www-data public/storage || true
 fi
+
+echo "Waiting for DB..."
+
+until php -r "
+try {
+    new PDO(
+        getenv('DB_CONNECTION').':host='.getenv('DB_HOST').';dbname='.getenv('DB_DATABASE'),
+        getenv('DB_USERNAME'),
+        getenv('DB_PASSWORD')
+    );
+} catch (Exception \$e) {
+    exit(1);
+}
+"; do
+  echo "DB not ready, retrying..."
+  sleep 3
+done
 
 echo "Running migrations..."
 su -s /bin/sh www-data -c "php artisan migrate --force"
 
-echo "Setting up Passport..."
-su -s /bin/sh www-data -c "php artisan passport:keys --force"
-su -s /bin/sh www-data -c "php artisan passport:client --personal --no-interaction" || true
+echo "Ensuring Passport keys..."
+if [ ! -f storage/oauth-private.key ]; then
+    su -s /bin/sh www-data -c "php artisan passport:keys"
+fi
 
 exec "$@"
