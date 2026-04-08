@@ -5,7 +5,7 @@ steps:
     [
       'build',
       '-t',
-      'us-central1-docker.pkg.dev/cloud-security-491400/livemenu/backend',
+      'us-west1-docker.pkg.dev/cloud-security-491400/livemenu/backend',
       '.'
     ]
 
@@ -17,9 +17,12 @@ steps:
       '1',
       '--severity',
       'HIGH,CRITICAL',
-      'us-central1-docker.pkg.dev/cloud-security-491400/livemenu/backend'
+      'us-west1-docker.pkg.dev/cloud-security-491400/livemenu/backend'
     ]
 
 images:
 
-- us-central1-docker.pkg.dev/cloud-security-491400/livemenu/backend
+- us-west1-docker.pkg.dev/cloud-security-491400/livemenu/backend
+
+options:
+  logging: CLOUD_LOGGING_ONLY
