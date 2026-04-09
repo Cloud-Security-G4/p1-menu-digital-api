@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gd \
  && pecl install imagick \
  && docker-php-ext-enable imagick \
+ && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
@@ -37,9 +38,12 @@ COPY . .
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
-    --no-interaction
+    --no-interaction \
+    --no-progress
 
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data \
+    storage \
+    bootstrap/cache
 
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' \
     /etc/apache2/sites-available/000-default.conf
