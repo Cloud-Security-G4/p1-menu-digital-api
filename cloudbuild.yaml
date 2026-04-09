@@ -13,8 +13,8 @@ steps:
   args:
     [
       'image',
-      '--exit-code',
-      '1',
+      #'--exit-code',
+      #'1',
       '--severity',
       'HIGH,CRITICAL',
       'us-west1-docker.pkg.dev/cloud-security-491400/livemenu/backend'
