@@ -9,7 +9,7 @@ steps:
       '.'
     ]
 
-- name: 'aquasec/trivy'
+- name: 'aquasec/trivy:0.51.0'
   args:
     [
       'image',
