@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
-    libmagickwand-dev \
     libpq-dev \
  && docker-php-ext-configure gd \
         --with-freetype \
@@ -22,8 +21,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         pcntl \
         bcmath \
         gd \
- && pecl install imagick \
- && docker-php-ext-enable imagick \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
