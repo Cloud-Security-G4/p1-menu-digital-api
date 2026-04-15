@@ -1,26 +1,13 @@
 FROM php:8.3-apache-bookworm
 
+# paquetes
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    unzip \
-    libpng-dev \
-    libjpeg-dev \
-    libwebp-dev \
-    libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    libpq-dev \
+    git unzip libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
+    libonig-dev libxml2-dev libpq-dev \
  && docker-php-ext-configure gd \
-        --with-freetype \
-        --with-jpeg \
-        --with-webp \
+        --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-install \
-        pdo_pgsql \
-        mbstring \
-        exif \
-        pcntl \
-        bcmath \
-        gd \
+        pdo_pgsql mbstring exif pcntl bcmath gd \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -29,7 +16,6 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 COPY . .
 
 RUN composer install \
@@ -38,22 +24,15 @@ RUN composer install \
     --no-interaction \
     --no-progress
 
-RUN chown -R www-data:www-data \
-    storage \
-    bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' \
     /etc/apache2/sites-available/000-default.conf
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-RUN sed -i 's/80/8080/g' /etc/apache2/ports.conf \
- && sed -i 's/:80/:8080/g' /etc/apache2/sites-available/000-default.conf
 
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
 CMD ["apache2-foreground"]
