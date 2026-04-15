@@ -11,9 +11,16 @@ if [ ! -L public/storage ]; then
     php artisan storage:link || true
 fi
 
-echo "Waiting for DB..."
+echo "Configuring Apache port..."
+PORT=${PORT:-80}
+sed -i "s/^Listen 80$/Listen $PORT/" /etc/apache2/ports.conf
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:$PORT>/" /etc/apache2/sites-available/000-default.conf
+sed -i "s/\*:80/\*:$PORT/" /etc/apache2/sites-available/000-default.conf
 
-until php -r "
+if [ "${ENABLE_DB_INIT}" = "true" ]; then
+  echo "Waiting for DB..."
+
+  until php -r "
 try {
     new PDO(
         getenv('DB_CONNECTION').':host='.getenv('DB_HOST').';dbname='.getenv('DB_DATABASE'),
@@ -24,21 +31,17 @@ try {
     exit(1);
 }
 "; do
-  echo "DB not ready, retrying..."
-  sleep 3
-done
+    echo "DB not ready, retrying..."
+    sleep 3
+  done
 
-echo "Running migrations..."
-su -s /bin/sh www-data -c "php artisan migrate --force"
+  echo "Running migrations..."
+  su -s /bin/sh www-data -c "php artisan migrate --force"
 
-echo "Ensuring Passport keys..."
-if [ ! -f storage/oauth-private.key ]; then
-    su -s /bin/sh www-data -c "php artisan passport:keys"
+  echo "Ensuring Passport keys..."
+  if [ ! -f storage/oauth-private.key ]; then
+      su -s /bin/sh www-data -c "php artisan passport:keys"
+  fi
 fi
-
-echo "Configuring Apache port..."
-PORT=${PORT:-80}
-sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf
-sed -i "s/*:80/*:$PORT/" /etc/apache2/sites-available/000-default.conf
 
 exec "$@"
