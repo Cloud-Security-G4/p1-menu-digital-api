@@ -13,9 +13,11 @@ fi
 
 echo "Configuring Apache port..."
 PORT=${PORT:-80}
-sed -i "s/^Listen 80$/Listen $PORT/" /etc/apache2/ports.conf
-sed -i "s/<VirtualHost \*:80>/<VirtualHost *:$PORT>/" /etc/apache2/sites-available/000-default.conf
-sed -i "s/\*:80/\*:$PORT/" /etc/apache2/sites-available/000-default.conf
+APACHE_BIND="0.0.0.0:${PORT}"
+
+sed -i "s/^Listen 80$/Listen ${APACHE_BIND}/" /etc/apache2/ports.conf
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-available/000-default.conf
+sed -i "s/\*:80/\*:${PORT}/g" /etc/apache2/sites-available/000-default.conf
 
 if [ "${ENABLE_DB_INIT}" = "true" ]; then
   echo "Waiting for DB..."
