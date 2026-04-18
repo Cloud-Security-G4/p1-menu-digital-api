@@ -47,6 +47,15 @@ return [
             'report' => false,
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'cloud-security-491400'),
+            'bucket' => env('GCS_BUCKET'),
+            'path_prefix' => '',
+            'visibility' => 'public',
+            'url' => 'https://storage.googleapis.com/' . env('GCS_BUCKET', 'livemenu-images-491400'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

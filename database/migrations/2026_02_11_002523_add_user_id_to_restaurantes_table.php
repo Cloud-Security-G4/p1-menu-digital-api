@@ -12,14 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            Schema::table('restaurants', function (Blueprint $table) {
-                $table->uuid('user_id')->after('id');
+            $table->unsignedBigInteger('user_id')->nullable();
 
-                $table->foreign('user_id')
-                    ->references('id')
-                    ->on('users')
-                    ->onDelete('cascade');
-            });
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 
@@ -29,10 +27,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('restaurants', function (Blueprint $table) {
-            Schema::table('restaurants', function (Blueprint $table) {
-                $table->dropForeign(['user_id']);
-                $table->dropColumn('user_id');
-            });
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 };

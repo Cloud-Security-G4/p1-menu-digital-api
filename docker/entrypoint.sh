@@ -38,10 +38,7 @@ if [ "${ENABLE_DB_INIT}" = "true" ]; then
   done
 
   su -s /bin/sh www-data -c "php artisan migrate --force" || true
-
-  if [ ! -f storage/oauth-private.key ]; then
-      su -s /bin/sh www-data -c "php artisan passport:keys" || true
-  fi
+  su -s /bin/sh www-data -c "php artisan passport:install" || true
 fi
 
 # Debug útil

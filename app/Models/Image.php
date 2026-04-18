@@ -16,6 +16,15 @@ class Image extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $appends = ['url'];
+
+    public function getUrlAttribute(): ?string
+    {
+        if (!$this->path) return null;
+        $bucket = config('filesystems.disks.gcs.bucket', 'livemenu-images-491400');
+        return "https://storage.googleapis.com/{$bucket}/{$this->path}";
+    }
+
     protected $fillable = [
         'restaurant_id',
         'filename',

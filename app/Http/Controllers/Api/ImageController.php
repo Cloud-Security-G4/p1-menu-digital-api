@@ -45,7 +45,7 @@ class ImageController extends Controller
         $path = $file->storeAs(
             "images/{$restaurant->id}",
             $filename,
-            'public'
+            'gcs'
         );
 
         $image = Image::create([
@@ -88,7 +88,7 @@ class ImageController extends Controller
             ], 404);
         }
 
-        Storage::disk('public')->delete($image->path);
+        Storage::disk('gcs')->delete($image->path);
 
         $image->delete();
 
