@@ -44,7 +44,7 @@ steps:
       '--timeout', '60',
       '--add-cloudsql-instances', 'cloud-security-491400:us-west1:livemenu-db',
       '--set-env-vars', 'APP_ENV=production,APP_DEBUG=false,APP_URL=https://livemenuapp.net,FRONTEND_URL=https://livemenuapp.net,LOG_CHANNEL=stderr,DB_CONNECTION=pgsql,DB_HOST=/cloudsql/cloud-security-491400:us-west1:livemenu-db,DB_PORT=5432,DB_DATABASE=menu_db,ENABLE_DB_INIT=false,GOOGLE_CLOUD_PROJECT_ID=cloud-security-491400,GCS_BUCKET=livemenu-images-491400,FILESYSTEM_DISK=gcs',
-      '--set-secrets', 'APP_KEY=APP_KEY:latest,DB_USERNAME=DB_USERNAME:latest,DB_PASSWORD=DB_PASSWORD:latest,/var/www/html/storage/oauth-private.key=PASSPORT_PRIVATE_KEY:latest,/var/www/html/storage/oauth-public.key=PASSPORT_PUBLIC_KEY:latest',
+      '--set-secrets', 'APP_KEY=APP_KEY:latest,DB_USERNAME=DB_USERNAME:latest,DB_PASSWORD=DB_PASSWORD:latest,PASSPORT_PRIVATE_KEY=PASSPORT_PRIVATE_KEY:latest,PASSPORT_PUBLIC_KEY=PASSPORT_PUBLIC_KEY:latest',
       '--quiet'
     ]
 
