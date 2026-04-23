@@ -1,13 +1,17 @@
 FROM php:8.3-apache-bookworm
 
-RUN apt-get update && apt-get upgrade -y --no-install-recommends \
- && apt-get install -y --no-install-recommends \
+# paquetes + imagick via install-php-extensions (handles deps automatically)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git unzip curl libpng-dev libjpeg-dev libwebp-dev libfreetype6-dev \
-    libonig-dev libxml2-dev libpq-dev \
+    libonig-dev libxml2-dev libpq-dev libmagickwand-dev \
+ && curl -sSLf https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
+    -o /usr/local/bin/install-php-extensions \
+ && chmod +x /usr/local/bin/install-php-extensions \
  && docker-php-ext-configure gd \
         --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-install \
         pdo_pgsql mbstring exif pcntl bcmath gd \
+ && install-php-extensions imagick \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
