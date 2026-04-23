@@ -12,6 +12,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && docker-php-ext-install \
         pdo_pgsql mbstring exif pcntl bcmath gd \
  && install-php-extensions imagick \
+ && (sed -i '/<\/policymap>/i\  <policy domain="coder" rights="none" pattern="MSL" \/>' \
+        /etc/ImageMagick-6/policy.xml || true) \
+ && (sed -i '/<\/policymap>/i\  <policy domain="coder" rights="none" pattern="AVIF" \/>' \
+        /etc/ImageMagick-6/policy.xml || true) \
+ && (sed -i '/<\/policymap>/i\  <policy domain="coder" rights="none" pattern="EXR" \/>' \
+        /etc/ImageMagick-6/policy.xml || true) \
+ && (sed -i '/<\/policymap>/i\  <policy domain="coder" rights="none" pattern="VIFF" \/>' \
+        /etc/ImageMagick-6/policy.xml || true) \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

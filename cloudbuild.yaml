@@ -25,6 +25,7 @@ steps:
       'image',
       '--scanners', 'vuln',
       '--severity', 'HIGH,CRITICAL',
+      '--ignorefile', '/workspace/.trivyignore',
       '--exit-code', '0',
       'us-west1-docker.pkg.dev/cloud-security-491400/livemenu/backend:latest'
     ]
